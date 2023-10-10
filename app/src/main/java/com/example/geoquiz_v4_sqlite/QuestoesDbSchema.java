@@ -9,4 +9,13 @@ public class QuestoesDbSchema {
             public static final String QUESTAO_CORRETA = "questao_correta";
         }
     }
+    public static final class RespostasTbl{
+        public static final String NOME = "Respostas";
+        public static final class Cols{
+            public static final String UUID = "uuid";
+            public static final String RESPOSTA_CORRETA = "resposta_correta";
+            public static String RESPOSTA_OFERECIDA = "resposta_oferecida";
+            public static String COLOU = "colou";
+        }
+    }
 }

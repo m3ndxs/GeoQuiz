@@ -15,11 +15,21 @@ public class QuestoesDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE "+ QuestoesDbSchema.QuestoesTbl.NOME+ "("+
-                "_id integer PRIMARY KEY autoincrement,"+
-                QuestoesDbSchema.QuestoesTbl.Cols.UUID+ ","+
-                QuestoesDbSchema.QuestoesTbl.Cols.QUESTAO_CORRETA + ","+
-                QuestoesDbSchema.QuestoesTbl.Cols.TEXTO_QUESTAO+ ")");
+        db.execSQL(
+                "CREATE TABLE " + QuestoesDbSchema.QuestoesTbl.NOME +
+                        "( _id integer PRIMARY KEY autoincrement," +
+                        QuestoesDbSchema.QuestoesTbl.Cols.UUID + "," +
+                        QuestoesDbSchema.QuestoesTbl.Cols.QUESTAO_CORRETA + "," +
+                        QuestoesDbSchema.QuestoesTbl.Cols.TEXTO_QUESTAO +
+                        ");"
+        );
+        db.execSQL(
+                "CREATE TABLE " + QuestoesDbSchema.RespostasTbl.NOME + " (" +
+                        QuestoesDbSchema.RespostasTbl.Cols.UUID + " TEXT PRIMARY KEY, " +
+                        QuestoesDbSchema.RespostasTbl.Cols.RESPOSTA_CORRETA + " INTEGER, " +
+                        QuestoesDbSchema.RespostasTbl.Cols.RESPOSTA_OFERECIDA + " BOOLEAN, " +
+                        QuestoesDbSchema.RespostasTbl.Cols.COLOU + " BOOLEAN)"
+        );
     }
 
     @Override

@@ -36,21 +36,30 @@ public class QuestaoDB {
        // mDatabase.update(QuestoesDbSchema.QuestoesTbl.NOME, valores, QuestoesDbSchema.QuestoesTbl.Cols.UUID +" = ?",
         //        new String[] {uuidString});
     }
-    public Cursor queryQuestao(String clausulaWhere, String[] argsWhere){
-        Cursor cursor = mDatabase.query(QuestoesDbSchema.QuestoesTbl.NOME,
+    public Cursor queryResposta(String clausulaWhere, String[] argsWhere){
+        Cursor cursor = mDatabase.query(QuestoesDbSchema.RespostasTbl.NOME,
                 null,  // todas as colunas
-                    clausulaWhere,
-                    argsWhere,
+                clausulaWhere,
+                argsWhere,
                 null, // sem group by
                 null, // sem having
                 null  // sem order by
-                );
-                return cursor;
+        );
+        return cursor;
     }
     void removeBanco(){
         int delete;
         delete = mDatabase.delete(
-                QuestoesDbSchema.QuestoesTbl.NOME,
+                QuestoesDbSchema.RespostasTbl.NOME,
                 null, null);
+    }
+
+    public void addResposta(int respostaCorreta, boolean respostaOferecida, boolean colou) {
+        ContentValues values = new ContentValues();
+        values.put("Resposta Correta", respostaCorreta);
+        values.put("Resposta Oferecida", respostaOferecida);
+        values.put("Colou", colou);
+
+        mDatabase.insert(QuestoesDbSchema.RespostasTbl.NOME, null, values);
     }
 }

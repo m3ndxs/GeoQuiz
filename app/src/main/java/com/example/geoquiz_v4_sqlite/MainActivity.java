@@ -99,13 +99,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mBotaoCadastra = (Button) findViewById(R.id.botao_cadastra);
-        mBotaoCadastra.setOnClickListener(new View.OnClickListener() {
+        //mBotaoCadastra = (Button) findViewById(R.id.botao_cadastra);
+        /*mBotaoCadastra.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*
+
                   Acesso ao SQLite
-                */
+
                 if (mQuestoesDb == null) {
                     mQuestoesDb = new QuestaoDB(getBaseContext());
                 }
@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
                 mQuestoesDb.addQuestao(mBancoDeQuestoes[indice++]);
                 mQuestoesDb.addQuestao(mBancoDeQuestoes[indice++]);
             }
-        });
+        }); */
 
         //Cursor cur = mQuestoesDb.queryQuestao ("_id = ?", val);////(null, null);
         //String [] val = {"1"};
@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     mTextViewQuestoesArmazenadas.setText("");
                 }
-                Cursor cursor = mQuestoesDb.queryQuestao(null, null);
+                Cursor cursor = mQuestoesDb.queryResposta(null, null);
                 if (cursor != null) {
                     if (cursor.getCount() == 0) {
                         mTextViewQuestoesArmazenadas.setText("Nada a apresentar");
@@ -141,10 +141,15 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         cursor.moveToFirst();
                         while (!cursor.isAfterLast()) {
-                            String texto = cursor.getString(cursor.getColumnIndex(QuestoesDbSchema.QuestoesTbl.Cols.TEXTO_QUESTAO));
-                            Log.i("MSGS", texto);
-
-                            mTextViewQuestoesArmazenadas.append(texto + "\n");
+                            int respostaCorreta = cursor.getInt(cursor.getColumnIndex(String.valueOf(QuestoesDbSchema.RespostasTbl.Cols.RESPOSTA_CORRETA)));
+                            boolean respostaOferecida = cursor.getInt(cursor.getColumnIndex(String.valueOf(QuestoesDbSchema.RespostasTbl.Cols.RESPOSTA_OFERECIDA))) == 1;
+                            boolean colou = cursor.getInt(cursor.getColumnIndex(String.valueOf(QuestoesDbSchema.RespostasTbl.Cols.RESPOSTA_OFERECIDA))) == 1;
+                            mTextViewQuestoesArmazenadas.append(
+                                    "\nResposta Correta: " +  respostaCorreta +
+                                            "\nResposta Oferecida: " +  respostaOferecida +
+                                            "\nColou: " +  colou +
+                                            "\n--------------------------"
+                            );
                             cursor.moveToNext();
                         }
                     } finally {
@@ -181,15 +186,25 @@ public class MainActivity extends AppCompatActivity {
     private void verificaResposta(boolean respostaPressionada) {
         boolean respostaCorreta = mBancoDeQuestoes[mIndiceAtual].isRespostaCorreta();
         int idMensagemResposta = 0;
+        int acertou = 0;
+        boolean colou = false;
 
         if (mEhColador) {
             idMensagemResposta = R.string.toast_julgamento;
+            colou = true;
         } else {
             if (respostaPressionada == respostaCorreta) {
                 idMensagemResposta = R.string.toast_correto;
-            } else
+                acertou = 1;
+            } else {
                 idMensagemResposta = R.string.toast_incorreto;
+                acertou = 0;
+            }
         }
+        if (mQuestoesDb == null) {
+            mQuestoesDb = new QuestaoDB(getBaseContext());
+        }
+        mQuestoesDb.addResposta(acertou, respostaPressionada, colou);
         Toast.makeText(this, idMensagemResposta, Toast.LENGTH_SHORT).show();
     }
 
