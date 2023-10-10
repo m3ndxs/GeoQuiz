@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
     private Button mBotaoVerdadeiro;
     private Button mBotaoFalso;
     private Button mBotaoProximo;
-    private Button mBotaoCadastra;
     private Button mBotaoMostra;
     private Button mBotaoDeleta;
 
@@ -98,25 +97,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent, CODIGO_REQUISICAO_COLA);
             }
         });
-
-        //mBotaoCadastra = (Button) findViewById(R.id.botao_cadastra);
-        /*mBotaoCadastra.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                  Acesso ao SQLite
-
-                if (mQuestoesDb == null) {
-                    mQuestoesDb = new QuestaoDB(getBaseContext());
-                }
-                int indice = 0;
-                mQuestoesDb.addQuestao(mBancoDeQuestoes[indice++]);
-                mQuestoesDb.addQuestao(mBancoDeQuestoes[indice++]);
-            }
-        }); */
-
-        //Cursor cur = mQuestoesDb.queryQuestao ("_id = ?", val);////(null, null);
-        //String [] val = {"1"};
         mBotaoMostra = (Button) findViewById(R.id.botao_mostra_questoes);
         mBotaoMostra.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,11 +116,10 @@ public class MainActivity extends AppCompatActivity {
                         mTextViewQuestoesArmazenadas.setText("Nada a apresentar");
                         Log.i("MSGS", "Nenhum resultado");
                     }
-                    //Log.i("MSGS", Integer.toString(cursor.getCount()));
-                    //Log.i("MSGS", "cursor não nulo!");
                     try {
                         cursor.moveToFirst();
                         while (!cursor.isAfterLast()) {
+
                             int respostaCorreta = cursor.getInt(cursor.getColumnIndex(String.valueOf(QuestoesDbSchema.RespostasTbl.Cols.RESPOSTA_CORRETA)));
                             boolean respostaOferecida = cursor.getInt(cursor.getColumnIndex(String.valueOf(QuestoesDbSchema.RespostasTbl.Cols.RESPOSTA_OFERECIDA))) == 1;
                             boolean colou = cursor.getInt(cursor.getColumnIndex(String.valueOf(QuestoesDbSchema.RespostasTbl.Cols.RESPOSTA_OFERECIDA))) == 1;

@@ -33,9 +33,19 @@ public class QuestaoDB {
     public void updateQuestao(Questao q){
         String uuidString = q.getId().toString();
         ContentValues valores = getValoresConteudo(q);
-       // mDatabase.update(QuestoesDbSchema.QuestoesTbl.NOME, valores, QuestoesDbSchema.QuestoesTbl.Cols.UUID +" = ?",
-        //        new String[] {uuidString});
     }
+    public Cursor queryQuestao(String clausulaWhere, String[] argsWhere){
+        Cursor cursor = mDatabase.query(QuestoesDbSchema.QuestoesTbl.NOME,
+                null,  // todas as colunas
+                clausulaWhere,
+                argsWhere,
+                null, // sem group by
+                null, // sem having
+                null  // sem order by
+        );
+        return cursor;
+    }
+
     public Cursor queryResposta(String clausulaWhere, String[] argsWhere){
         Cursor cursor = mDatabase.query(QuestoesDbSchema.RespostasTbl.NOME,
                 null,  // todas as colunas
@@ -53,12 +63,11 @@ public class QuestaoDB {
                 QuestoesDbSchema.RespostasTbl.NOME,
                 null, null);
     }
-
     public void addResposta(int respostaCorreta, boolean respostaOferecida, boolean colou) {
         ContentValues values = new ContentValues();
-        values.put("Resposta Correta", respostaCorreta);
-        values.put("Resposta Oferecida", respostaOferecida);
-        values.put("Colou", colou);
+        values.put("RESPOSTA_CORRETA", respostaCorreta);
+        values.put("RESPOSTA_OFERECIDA", respostaOferecida);
+        values.put("COLOU", colou);
 
         mDatabase.insert(QuestoesDbSchema.RespostasTbl.NOME, null, values);
     }

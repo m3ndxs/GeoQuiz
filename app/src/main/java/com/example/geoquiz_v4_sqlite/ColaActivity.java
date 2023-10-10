@@ -20,7 +20,7 @@ public class ColaActivity extends AppCompatActivity {
     private TextView mTextViewResposta;
     private Button mBotaoMostraResposta;
     private boolean mColou = false;  // registra se o usuário viu ou não a reposta (para recuperar o estado em caso de rotação
-                                     // do dispositivo)
+    // do dispositivo)
     @Override
     protected void onCreate(Bundle instanciaSalva) {
         super.onCreate(instanciaSalva);
@@ -67,7 +67,6 @@ public class ColaActivity extends AppCompatActivity {
     /* salva estado da activivty em caso de rotação do dispositivo */
     public void onSaveInstanceState(Bundle instanciaSalva) {
         super.onSaveInstanceState(instanciaSalva);
-        //Log.i(TAG, "onSaveInstanceState()");
         instanciaSalva.putBoolean(CHAVE_COLOU, mColou);
     }
 }
